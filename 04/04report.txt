@@ -1,0 +1,78 @@
+﻿COSC 326
+Etude 04  Report
+----------------------------------
+Problem Description
+
+You are planning to cross a desert 2413 km wide in a special desert vehicle.
+• The vehicle can travel 12 km on 1 litre of fuel.
+• It has a 60 litre tank and can carry at most four 20 litre cans.
+• The only source of fuel and cans is at the base at the start of the desert.
+Fuel and cans at the base are not limited.
+--------------------------------------------------------------------------------
+1. Using the vehicle without refuelling, how far into the desert can you
+safely go?
+
+Firstly, all conditional variables will be ignored in these calculations.
+- weather conditions
+- vehicle issues (flat tyres, breakdowns)
+- wheel spinning
+- lost fuel
+- fuel burnt over time is constant
+Extra distance required to make a U-turn will also be discounted.
+
+Calculations
+
+1 Litre of fuel = 12km
+140L Total
+
+12 * 140 = 1680km 
+The vehicle can travel 1680km into the desert before it runs out of fuel.
+
+Assuming 'safely' means the ability to get back, the vehicle can travel;
+12 * 140 / 2 = 840km
+
+If "without refuelling" means only using the 60L tank (no fuel cans), then;
+12 * 60 / 2 = 360km (or 720km for no return)
+--------------------------------------------------------------------------------
+2. Describe a procedure whereby you could cross the desert in the vehicle.
+
+Assuming there is no way to increase the number of cans that the vehicle 
+can carry. The only way to cross the desert would be to carry fuel tanks
+out to certain 'checkpoints' and head back to the refuel station repeatedly.
+This way the vehicle can refuel throughout the journey with more than the    
+current maximum fuel load (140L) - allowing it to get across the desert.
+
+Calculations
+
+Total Distance = 2413km
+2413 / 12 = 201.083333 (recurring) 	//TotalFuelNeeded
+
+TotalFuelNeeded – CurrentMaxLoad = fuelNeeded
+201.08333 – 140L = 61.0833 (recurring)
+
+Therefore; 61.08333 Litres of fuel need to be placed out in the desert.
+
+Since the vehicle can travel 1680km on a full load (full tank and 4 fuel cans)
+We need to figure out how to get the vehicle to have a full fuel load after already travelling the first 733km.
+
+currentVolume = 60 – d/12	//volume of fuel tank over distance. 
+					//where d = the distance travelled in km.
+
+
+
+--------------------------------------------------------------------------------
+3. Describe a procedure whereby you could cross the desert and return in the vehicle.
+			
+The total distance travelled will depend on the number of trips taken.
+The final trip will have the remaining 60L (that was already in the fuel tank) to make the last stretch. (This 60L is excluded earlier because it can not be dropped off).
+
+To cross the desert and return, we need to get to 
+2413 – 360 = 2053 km
+
+
+
+
+
+
+
+

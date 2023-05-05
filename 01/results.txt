@@ -1,0 +1,41 @@
+01 Mar 3000 is a valid date.
+
+29/02/1991 - INVALID: Day is not within range.
+Range depends on month and leap years.
+
+12 Apr 1995 is a valid date.
+
+3-6-/68 - INVALID: Input is not a valid format.
+Must be dd/mm/yyyy or dd mm yyyy or dd-mm-yyyy
+
+31 Dec 1950 is a valid date.
+
+32/12/50 - INVALID: Day is not within range.
+Range depends on month and leap years.
+
+
+31/11/50 - INVALID: Day is not within range.
+Range depends on month and leap years.
+
+29 Feb 1992 is a valid date.
+28 Feb 1991 is a valid date.
+
+357 apr 2089 - INVALID: Day has too many digits.
+Cannot be > 2 digits
+
+
+2/OCT/2000/ - INVALID: Input is not a valid format.
+Must be dd/mm/yyyy or dd mm yyyy or dd-mm-yyyy
+
+
+12/1/1787- - INVALID: Input is not a valid format.
+Must be dd/mm/yyyy or dd mm yyyy or dd-mm-yyyy
+
+
+00004/7/87 - INVALID: Day has too many digits.
+Cannot be > 2 digits
+
+
+256/2/2000 - INVALID: Day has too many digits.
+Cannot be > 2 digits
+

@@ -1,0 +1,23 @@
+README.txt
+COSC326 Etude 2
+Syllable Counting Program
+
+AUTHORS:
+	Amaan Aamir
+	Eliot Luna
+	Zac Seales
+	Liam Wilson
+
+INSTRUCTIONS:
+
+	1. Compile all java files.
+>>javac -Xlint *.java
+
+	2. Run the program.
+    		a) run with a file (there in an attached files used for testing "words.txt"
+>>java Syll
+    b) OR, run on it's own and type in a date (ctrl-C to exit)
+>>java Dates
+    c) OR, redirect a text file to the stdin
+>>java Dates < dates.txt
+

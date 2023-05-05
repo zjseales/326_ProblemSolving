@@ -1,0 +1,362 @@
+/** DateCheck.java
+ *  COSC326 etude 01
+ * 
+ *  Contains functions that check if q String is a valid 
+ *  date between the constant values minYear and maxYear.
+ * 
+ * @author Zac Seales - 6687905 - seaza886 
+ */
+
+public class DateCheck {
+
+    /** The minimum year allowed. */
+    public final static long minYear = 1753;
+    /** The maximum year. */
+    public final static long maxYear = 3000;
+    //the month as an int value.
+    private int month;
+
+    /** The only public method, Outputs dates if they are valid
+     *  and returns true, else will return false for an invalid date.
+     *@param input - the string being analyzed for validity.
+     *@return bool - true if input is valid, else false.
+     */
+    public boolean isValidDate(String input){
+        String[] elements;
+        char delim = determineDelimiter(input);
+        //simplifies comparisons
+        input = input.toLowerCase();
+
+        //only attempts to split the date if a valid delimiter has been used
+        if(delim != '!'){
+            elements = input.split("" + delim);
+
+            //if elements are valid then reformat for output
+            if(validElements(elements, input)){
+                elements[0] = dayOut(elements[0]);
+                elements[1] = monthToString(month);
+                elements[2] = yearOut(elements[2]);
+
+                displayOutputString(elements[0], elements[1], elements[2]);
+                return true;
+            }
+        }
+        return false;
+    }//end isValidDate method
+
+    /** Modifies the input string to the valid day output format.
+     * @param d - the day input.
+     * @return d - the day output.
+     */
+    private String dayOut(String d){
+        if(d.charAt(0) != '0' && d.length() == 1){
+            d = "0" + d;
+        }
+        return d;
+    }
+
+    /** Modifies the year to the correct output format.
+     * @param y - the year input.
+     * @return y - the year output.
+     */
+    private String yearOut(String y){
+        long year = Long.parseLong(y);
+        //check 2 digit year
+	if (y.length() == 2){
+            if(year >= 50){
+                year += 1900;
+            } else {
+		year += 2000;
+            }
+        }
+        return y = "" + year;
+    }
+
+    /** Ensures each element of the date is valid.
+     *@param arr - the array of String elements representing the date.
+     *@param input - the original line of input(used when calling errors method)
+     */
+    private boolean validElements(String[] arr, String input){
+        //must be 3 elements (day, month, and year)
+        if (arr.length != 3){
+            return errors(input, "format");
+        }
+        //checks validity of each element
+        if (checkMonthValidity(input, arr[1])){
+            if(checkYearValidity(input, arr[2])){
+                if (checkDayValidity(input, arr[0], Long.parseLong(arr[2]))){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }//end dateSplit method
+
+    /** Returns a String of the valid date arguments in the proper output format.
+     *@param d - the valid day.
+     *@param m - the valid month.
+     *@param y - the valid year.
+     */
+    private void displayOutputString(String d, String m, String y){
+	System.out.println(d + " " + m + " " + y + " is a valid date.");
+    }//end outputDate method
+
+    /** Iterates the line of input to determine the date format.
+     *@param input - the String being iterated.
+     *@return currDelim - the delimiter being used (returns ! if error).
+     */
+    private char determineDelimiter(String input){
+    	char[] inputArray = input.toCharArray();
+    	char currDelim = '&';
+    	int count = 0;
+
+    	for(char ch : inputArray){
+    	    if(ch == '/' && currDelim == '&'){
+		currDelim = '/';
+    	    } else if (ch == ' ' && currDelim == '&'){
+    		currDelim = ' ';
+    	    } else if (ch == '-' && currDelim == '&'){
+		currDelim = '-';
+    	    } else if (currDelim != ch && (ch == '-'|| ch == '/' || ch ==' ')){
+		currDelim = '!';
+    	    }
+    	    if (currDelim != '&' && currDelim == ch){
+		count++;
+    	    }
+    	}
+    	//detects format error
+    	if (currDelim == '&' || currDelim == '!' || count > 2){
+    	    errors(input, "format");
+    	    currDelim = '!';
+    	}
+    	return currDelim;
+    }//end determineDelimiter method
+
+    /** Determines whether or not the day is a valid date, 
+     *  dependent on the month and if the year is a leap year.
+     *@param input - the line of user input.
+     *@param d - the day being checked.
+     */
+    private boolean checkDayValidity(String input, String d, long year){
+	int maxDay;
+        int validDay;
+	if(d.length() > 2){
+	    return errors(input, "TooManyDayDigits");
+	}
+	if(month == 4 || month == 6 || month == 9 || month == 11){
+	    maxDay = 30;
+	} else if (month != 2){
+	    maxDay = 31;
+	} else if (leapYear(year)){
+	    maxDay = 29;
+	} else {
+	    maxDay = 28;
+	}
+	try{
+	    validDay = Integer.parseInt(d);
+	    if(validDay < 1 || validDay > maxDay){
+		return errors(input, "dayRange");
+	    }
+	} catch (NumberFormatException e){
+	    return errors(input, "dayFormat");
+	}
+	return true;
+    }//end checkdayValidity method
+    
+    /** Checks that the month is either a valid string or an integer
+     * between 1 and 12.
+     *@param month - the string being checked for validity.
+     */
+    private boolean checkMonthValidity(String input, String m) {
+	boolean valid = false;
+	
+	//checks for valid string format
+	if(m.length() == 3){
+	    //determines case of string
+	    boolean[] chars = new boolean[3];
+	    for (int i = 0; i < 3; i++){
+		if(Character.isLowerCase(m.charAt(i))){
+		    chars[i] = true;
+		}
+	    }
+	    //if first char is lowercase, all must be lowercase
+	    if(chars[0] && (!chars[1] || !chars[2])){
+		return errors(input, "case");
+	    	//if first char is uppercase, either rest upper or rest lower
+	    } else if (!chars[0] && chars[1] != chars[2]){
+		return errors(input, "case");
+	    }
+	    //checks month is a valid string
+	    for(int i = 0; i < 12; i++){
+		if(m.equalsIgnoreCase(monthToString(i + 1))){
+		    valid = true;
+		}
+	    }
+	    if(!valid){
+		return errors(input, "invalidMonth");
+	    }
+	    return true;
+	}
+	
+	//check for integer format and ensure within range
+	try{
+	    month = Integer.parseInt(m);
+	    if(month < 1 || month > 12){
+		return errors(input, "invalidMonth");
+	    }
+	} catch(NumberFormatException e){
+	    return errors(input, "invalidMonth");
+	}
+	return true;
+    }//end checkMonthValidity method
+
+    /** Returns true if parameter 'year' is a leap year, else returns false.
+     *@param year - the year being checked.
+     *@return bool - true if year is a leap year, else false.
+     */
+    private boolean leapYear(long year){
+	if(year % 4 != 0){
+	    return false;
+	}
+	if(year % 100 != 0){
+	    return true;
+	}
+	if(year % 400 != 0){
+	    return false;
+	}
+	return true;
+    }//end leapYear method
+	
+    /**Checks the year is valid and within the defined range.
+     *@param input - the line of user input.
+     *@param y - the year being checked.
+     *@return bool - true if the year is valid, else false.
+     */
+    private boolean checkYearValidity(String input, String y){
+        long year;
+	if(y.length() != 2 && y.length() != 4){
+	    return errors(input, "invalidYearFormat");
+	}
+	try {
+            y = yearOut(y);
+	    year = Long.parseLong(y);
+    	    //check 4 digit year
+    	    if(year < minYear || year > maxYear){
+		return errors(input, "yearRange");
+    	    }
+    	} catch (NumberFormatException e){
+    	    return errors(input, "invalidYearFormat");
+    	}
+    	return true;
+    }//end checkYearValidity method
+	
+    /** Returns the int argument as its corresponding month String value.
+     *@param month - the month as an integer.
+     *@return mString - the month int arg as a String.
+     */
+    private String monthToString(int month){
+        String mString = "";
+
+        //standard error check to stop future developers breaking code
+        if(month > 12 || month < 1){
+            return mString;
+        }
+
+        switch(month){
+
+	case 1:
+	    mString = "Jan";
+	    break;
+	case 2:
+	    mString = "Feb";
+	    break;
+	case 3:
+	    mString = "Mar";
+	    break;
+	case 4:
+	    mString = "Apr";
+	    break;
+	case 5:
+	    mString = "May";
+	    break;
+	case 6:
+	    mString = "Jun";
+	    break;
+	case 7:
+	    mString = "Jul";
+	    break;
+	case 8:
+	    mString = "Aug";
+	    break;
+	case 9:
+	    mString = "Sep";
+	    break;
+	case 10:
+	    mString = "Oct";
+	    break;
+	case 11:
+	    mString = "Nov";
+	    break;
+	case 12:
+	    mString = "Dec";
+	    break;
+        }
+        return mString;
+    }//end monthToString method
+
+    /** Defines all possible errors and displays the error message
+     *  dependent on the input argument. Returns false to indicate
+     *  that an invalid date input has caused an error.
+     *@param input - the users input.
+     *@param errorType - the type of error that has occurred.
+     */
+    private static boolean errors(String input, String errorType){
+	String errorMessage = "";
+	
+	System.out.println();
+	System.out.print(input + " - INVALID: ");
+	//input format error
+	if (errorType.equals("format")){
+	    errorMessage = ("Input is not a valid format.\nMust be dd/mm/yyyy "
+	    		    + "or dd mm yyyy or dd-mm-yyyy");
+	    
+	    //Month String case error
+	} else if (errorType.equals("case")){
+	    errorMessage = ("Month letters must either be; \nthe same case"
+	    		    + "(all uppercase or all lowercase), \nor have"
+	    		    + " the first letter uppercase.");
+
+	    //Invalid month error
+    	} else if(errorType.equals("invalidMonth")){
+    	    errorMessage = ("Month is not valid.\nMust be first 3 letters "
+    			    + "of month (eg. Jan, Feb, Dec),\nor an "
+    			    + "integer between 1 and 12.");
+
+	    //invalid year error
+    	} else if(errorType.equals("invalidYearFormat")){
+    	    errorMessage = ("Year is not valid.\nMust be either 4 digits"
+    			    + " or 2 digits (eg. yyyy, yy)");
+
+	    //year out of range error
+    	} else if(errorType.equals("yearRange")){
+    	    errorMessage = ("Year is not within range.\n");
+
+	    //day out of range error
+    	} else if(errorType.equals("dayRange")){
+    	    errorMessage = ("Day is not within range.\nRange depends on "
+    			    + "month and leap years.");
+
+   	    //day format error
+    	} else if(errorType.equals("dayFormat")){
+    	    errorMessage = ("Day is not of valid format.\nMust be an integer.");
+
+	    //too many digits in the day error
+    	} else if(errorType.equals("TooManyDayDigits")){
+    	    errorMessage = ("Day has too many digits.\nCannot be > 2 digits");
+    	}
+	
+    	System.out.println(errorMessage + "\n");
+    	return false;
+    }//end errors method
+
+}//end Dates class

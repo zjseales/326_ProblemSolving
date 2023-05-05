@@ -1,0 +1,50 @@
+README.txt
+
+Maori Translation Program
+COSC 326 Etude 05
+
+AUTHORS:
+	Zac Seales
+	Amaan Aamir
+
+INSTRUCTIONS:
+  1. Compile all java files.
+>>javac -Xlint *.java
+
+  2. Run the program by entering English sentences through stdin.
+--
+NOTE: Input sentences must begin with a pronoun and end with a verb.
+--
+	a) Either, run the program and type input into the command terminal
+>>java Translator
+
+	b) or, redirect a file of input to stdin
+>>java Translator < validSentences.txt
+
+PROGRAM INFO:
+The Translator class reads lines of input, calls the translate method from
+the Translate class, and outputs the results (if no error occurred).
+
+There are 3 components which determine the final Maori translation;
+Pronoun, tense, and verb. This program attempts to determine these values
+which are represented in the 'components' array.
+The main method will ignore any components array which is not complete.
+
+The translate method checks the first word of the input to ensure it is
+a valid pronoun.
+It then attempts to determine the tense from any words that are not the 
+pronoun or the verb.
+The verb is then analyzed and translated.
+If the tense has not yet been determined then the valid verb will determine 
+the tense.
+
+KNOWN PROBLEMS:
+None this code is full-proof.
+It's very likely there's connecting words that we haven't considered though.
+
+
+WHO DID WHAT:
+Zac Seales wrote the README file, the comments and the initial code,
+also worked largely on error and bug-checking.
+Amaan Aamir wrote test data and ensured test data lined up with correct results.
+Amaan also worked on the rules and bug-checking.

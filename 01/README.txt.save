@@ -1,0 +1,39 @@
+README.txt
+
+Dates program 
+COSC326 Etude01
+Zac Seales - 6687905 - seaza886
+
+Instructions:
+NOTE: '>>' is used to represent the command line window. 
+      DO NOT type '>>'. Only type the text that follows.
+
+ 1. Compile all classes using,		
+>>javac -Xlint *.java
+
+ 2. Either,
+    a) run with a file (there in an attached files used for testing "dates.txt" 
+>>java Dates dates.txt
+    b) OR, run on it's own and type in a date
+>>java Dates
+    c) OR, redirect a text file to the stdin
+>>java Dates < dates.txt
+
+Program info:
+The Dates class is only used to import a file, and check for validity,
+using the dateCheck class
+All error and validity checks are done in the DateCheck class.
+
+
+INPUT files:
+dates.txt
+
+RESULTS:
+I've redirected the output of the program into results.txt. 
+You've asked for my results and I wanted to keep this file tidy.
+But you should just be able to run the program yourself and get the same results.
+
+Resources: Java API 
+		https://docs.oracle.com/javase/7/docs/api/
+	   Leap Year algorithm 
+		https://en.wikipedia.org/wiki/Leap_year
